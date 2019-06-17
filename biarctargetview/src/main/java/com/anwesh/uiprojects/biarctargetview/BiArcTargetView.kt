@@ -23,6 +23,7 @@ val strokeFactor : Int = 90
 val sizeFactor : Float = 2.9f
 val foreColor : Int = Color.parseColor("#283593")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -53,6 +54,7 @@ fun Canvas.drawBiArc(sc : Float, size : Float, paint : Paint) {
 fun Canvas.drawTargetLines(sc : Float, size : Float, paint : Paint) {
     val offsetY : Float = -size / 2
     var currDeg : Float = 0f
+    drawLine(0f, offsetY, 0f, 2 * offsetY, paint)
     for (j in 0..(lines - 1)) {
         val scj : Float = sc.divideScale(j, lines)
         currDeg += rotDeg * scj
@@ -102,7 +104,7 @@ class BiArcTargetView(ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            scale += scale.updateValue(dir, lines, 1)
+            scale += scale.updateValue(dir, parts, lines)
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
@@ -125,7 +127,7 @@ class BiArcTargetView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(delay)
                     view.invalidate()
                 } catch(ex : Exception) {
 
