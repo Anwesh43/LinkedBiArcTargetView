@@ -213,4 +213,26 @@ class BiArcTargetView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : BiArcTargetView) {
+
+        private val animator : Animator = Animator(view)
+        private val bat : BiArcTarget = BiArcTarget(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            bat.draw(canvas, paint)
+            animator.animate {
+                bat.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bat.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
