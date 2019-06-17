@@ -242,7 +242,7 @@ class BiArcTargetView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : BiArcTargetView {
             val view : BiArcTargetView = BiArcTargetView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
