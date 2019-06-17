@@ -236,4 +236,13 @@ class BiArcTargetView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BiArcTargetView {
+            val view : BiArcTargetView = BiArcTargetView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
